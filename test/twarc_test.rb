@@ -5,9 +5,12 @@ class TwarcTest < Minitest::Test
 
   def setup
 
+    @log_location = "../data/twarc.log"
     @auth_hash = eval(File.open("../../ruby-twarc-auth.rb").read)
 
-    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret]})
+    File.delete(@log_location) if File.exists? @log_location
+
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location})
 
   end
 
@@ -39,6 +42,13 @@ class TwarcTest < Minitest::Test
     results = @twarc.search(query: (0...50).map { ('a'..'z').to_a[rand(26)] }.join)
     assert_equal 0, results.size
     # test log file touched
+  end
+
+  def test_basic_search_logging
+    results = @twarc.search(query: "mandolin")
+    log = File.open(@log_location).readlines
+    assert_equal 2, log.size
+    assert_equal "INFO -- : archived 100 tweets.", log.last.split.last
   end
 end
 

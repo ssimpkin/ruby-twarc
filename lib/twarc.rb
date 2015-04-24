@@ -1,5 +1,6 @@
 require "json"
 require "oauth"
+require "logger"
 
 class Twarc
 
@@ -11,6 +12,8 @@ class Twarc
     @access_token = arguments[:access_token]
     @access_token_secret = arguments[:access_token_secret]
     @max_id = 0
+
+    @@logger = Logger.new(arguments[:log])
 
   end
 
@@ -26,6 +29,8 @@ class Twarc
     access_token = prepare_access_token(@access_token, @access_token_secret)
     response = access_token.request(:get, url)
     parsed_results = JSON.parse(response.body)["statuses"]
+
+    @@logger.info("archived #{parsed_results.size} tweets.")
     @max_id = parsed_results.last["id_str"] if parsed_results.size > 0
     parsed_results
   end
