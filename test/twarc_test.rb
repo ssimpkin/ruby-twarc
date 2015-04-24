@@ -47,8 +47,8 @@ class TwarcTest < Minitest::Test
   def test_basic_search_logging
     results = @twarc.search(query: "mandolin")
     log = File.open(@log_location).readlines
-    assert_equal 2, log.size
-    assert_equal "INFO -- : archived 100 tweets.", log.last.split.last
+    assert_equal 3, log.size
+    assert_equal "INFO -- : archived 100 tweets.", log.last.split("]").last.strip
   end
 end
 

@@ -39,16 +39,20 @@ OptionParser.new do |opts|
   opts.on('--query [ARG]', "query string") do |v|
     hash_options[:query] = v
   end
+  opts.on('--log [ARG]', "log file location") do |v|
+    hash_options[:log] = v
+  end
 end.parse!
 
 q = hash_options[:query]
 if hash_options[:auth_file]
-  auth_info = eval(File.open(hash_options[:auth_file]).read)
+  arguments = eval(File.open(hash_options[:auth_file]).read)
+  arguments[:log] = hash_options[:log]
 else
-  auth_info = hash_options
+  arguments = hash_options
 end
 
-twarc = Twarc.new(auth_info)
+twarc = Twarc.new(arguments)
 
 if hash_options[:search]
   @results = twarc.search(query: q)

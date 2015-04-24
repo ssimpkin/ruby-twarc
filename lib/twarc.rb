@@ -23,6 +23,8 @@ class Twarc
     max_id = arguments[:max_id] || ""
     since_id = arguments[:since_id] || ""
 
+    @@logger.info("starting search for #{query}")
+
     endpoint = "https://api.twitter.com/1.1/search/tweets.json"
     url = "#{endpoint}?q=#{query}&count=100&max_id=#{max_id}&since_id=#{since_id}"
 
