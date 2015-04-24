@@ -6,43 +6,53 @@ require 'optparse'
 hash_options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby-twarc [options]"
-  opts.on('-m [ARG]', '--method [ARG]', "search, stream, or hydrate") do |v|
-    hash_options[:method] = v
+  opts.on('--search', "Use the Twitter search API") do |v|
+    hash_options[:search] = v
   end
-  opts.on('-f [ARG]', '--file [ARG]', "specify an auth file") do |v|
-    hash_options[:file] = v
+  opts.on('--stream', "Use the Twitter stream API") do |v|
+    hash_options[:stream] = v
   end
-  opts.on('-k', '--key [ARG]', "your consumer key") do |v|
+  opts.on('--hydrate', "Rehydrate tweets from a file of ids") do |v|
+    hash_options[:stream] = v
+  end
+  opts.on('--max_id', "Maximum tweet id to search for") do |v|
+    hash_options[:stream] = v
+  end
+  opts.on('--since_id', "Smallest id to search for") do |v|
+    hash_options[:stream] = v
+  end
+  opts.on('--auth_file [ARG]', "specify an auth file") do |v|
+    hash_options[:auth_file] = v
+  end
+  opts.on('--consumer_key', "your consumer key") do |v|
     hash_options[:consumer_key] = v
   end
-  opts.on('-s', '--secret [ARG]', "your consumer secret") do |v|
+  opts.on('--consumer_secret', "your consumer secret") do |v|
     hash_options[:consumer_secret] = v
   end
-  opts.on('-t', '--token [ARG]', "your access token") do |v|
+  opts.on('--access_token', "your access token") do |v|
     hash_options[:access_token] = v
   end
-  opts.on('-x', '--token_secret [ARG]', "your secret token") do |v|
+  opts.on('--access_token_secret', "your secret token") do |v|
     hash_options[:access_token_secret] = v
   end
-  opts.on('-q', '--query [ARG]', "query string") do |v|
+  opts.on('--query [ARG]', "query string") do |v|
     hash_options[:query] = v
   end
 end.parse!
 
-method = hash_options[:method]
 q = hash_options[:query]
-
-if hash_options[:file]
-  auth_info = eval(File.open(hash_options[:file]).read) if hash_options[:file]
+if hash_options[:auth_file]
+  auth_info = eval(File.open(hash_options[:auth_file]).read)
 else
-  auth_info = hash_options.tap{ |h| h.delete(:method); h.delete(:file) }
+  auth_info = hash_options
 end
 
 twarc = Twarc.new(auth_info)
 
-if method == "search"
+if hash_options[:search]
   @results = twarc.search(query: q)
-elsif method == "stream"
+elsif hash_options[:stream]
   puts "Streaming not yet implemented."
   exit
 else

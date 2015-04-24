@@ -21,7 +21,8 @@ class Twarc
     since_id = arguments[:since_id] || ""
 
     endpoint = "https://api.twitter.com/1.1/search/tweets.json"
-    url = "#{endpoint}?q=#{query}&count=100&since_id=#{max_id}&since_id=#{since_id}"
+    url = "#{endpoint}?q=#{query}&count=100&max_id=#{max_id}&since_id=#{since_id}"
+
     access_token = prepare_access_token(@access_token, @access_token_secret)
     response = access_token.request(:get, url)
     parsed_results = JSON.parse(response.body)["statuses"]
