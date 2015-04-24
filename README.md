@@ -18,3 +18,4 @@ A port of Ed Summers' Twarc (https://github.com/edsu/twarc) to Ruby
     --access_token [token]: your access token
     --access_token_secret [token-secret]: your secret token
     --query [query]: your query string
+    --log [logfile]: location of logfile
