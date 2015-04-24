@@ -6,7 +6,7 @@ require 'optparse'
 hash_options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby-twarc [options]"
-  opts.on('-m [ARG]', '--method [ARG]', "search or stream") do |v|
+  opts.on('-m [ARG]', '--method [ARG]', "search, stream, or hydrate") do |v|
     hash_options[:method] = v
   end
   opts.on('-f [ARG]', '--file [ARG]', "specify an auth file") do |v|
@@ -42,9 +42,11 @@ twarc = Twarc.new(auth_info)
 
 if method == "search"
   @results = twarc.search(query: q)
-else
+elsif method == "stream"
   puts "Streaming not yet implemented."
   exit
+else
+  puts "Hydrate not yet implemented."
 end
 
 puts @results

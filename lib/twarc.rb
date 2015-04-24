@@ -3,13 +3,14 @@ require "oauth"
 
 class Twarc
 
-  attr_reader :consumer_key, :consumer_secret, :access_token, :access_token_secret
+  attr_reader :consumer_key, :consumer_secret, :access_token, :access_token_secret, :max_id
 
   def initialize(arguments = {})
     @consumer_key = arguments[:consumer_key]
     @consumer_secret = arguments[:consumer_secret]
     @access_token = arguments[:access_token]
     @access_token_secret = arguments[:access_token_secret]
+    @max_id = 0
 
   end
 
@@ -23,7 +24,9 @@ class Twarc
     url = "#{endpoint}?q=#{query}&count=100&since_id=#{max_id}&since_id=#{since_id}"
     access_token = prepare_access_token(@access_token, @access_token_secret)
     response = access_token.request(:get, url)
-    JSON.parse(response.body)["statuses"]
+    parsed_results = JSON.parse(response.body)["statuses"]
+    @max_id = parsed_results.last["id_str"] if parsed_results.size > 0
+    parsed_results
   end
 
   private
