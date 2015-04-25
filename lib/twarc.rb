@@ -30,8 +30,8 @@ class Twarc
 
     access_token = prepare_access_token(@access_token, @access_token_secret)
     response = access_token.request(:get, url)
-    parsed_results = JSON.parse(response.body)["statuses"]
 
+    parsed_results = JSON.parse(response.body)["statuses"]
     @@logger.info("archived #{parsed_results.size} tweets.")
     @max_id = parsed_results.last["id_str"] if parsed_results.size > 0
     parsed_results

@@ -34,8 +34,9 @@ class TwarcTest < Minitest::Test
 
   def test_continued_search
     id = "591653158700654593"
-    results = @twarc.search(query: "vodka", max_id: id, since_id: id)
-    assert (id.to_i < results.first["id_str"].to_i)
+    results = @twarc.search(query: "vodka", max_id: id, since_id: (id.to_i - 1).to_s)
+    assert_equal 1, results.size
+    assert_equal id.to_i, results.first["id_str"].to_i
   end
 
   def test_empty_search
