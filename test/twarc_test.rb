@@ -36,7 +36,8 @@ class TwarcTest < Minitest::Test
   def test_empty_search
     results = @twarc.search(query: (0...50).map { ('a'..'z').to_a[rand(26)] }.join)
     assert_equal 0, results.size
-    # test log file touched
+    log = File.open(@log_location).readlines
+    assert_equal "INFO -- : archived 0 tweets.", log.last.split("]").last.strip
   end
 
   def test_basic_search_logging
