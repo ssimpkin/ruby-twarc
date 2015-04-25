@@ -3,6 +3,7 @@ require "oauth"
 require "logger"
 
 TWITTER_SEARCH = "https://api.twitter.com/1.1/search/tweets.json"
+TWITTER_STREAM = "https://stream.twitter.com/1.1/statuses/filter.json"
 
 class Twarc
 
