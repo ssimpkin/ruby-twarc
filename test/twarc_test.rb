@@ -4,25 +4,19 @@ require_relative "test_helper"
 class TwarcTest < Minitest::Test
 
   def setup
-
     @log_location = "../data/twarc.log"
     @auth_hash = eval(File.open("../../ruby-twarc-auth.rb").read)
-
     File.delete(@log_location) if File.exists? @log_location
-
     @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location})
-
   end
 
   def test_instantiation_of_twarc_object
-
     assert @twarc
     assert_instance_of Twarc, @twarc
     assert_equal @auth_hash[:consumer_key], @twarc.consumer_key
     assert_equal @auth_hash[:consumer_secret], @twarc.consumer_secret
     assert_equal @auth_hash[:access_token], @twarc.access_token
     assert_equal @auth_hash[:access_token_secret], @twarc.access_token_secret
-
   end
 
   def test_basic_search
@@ -46,7 +40,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_basic_search_logging
-    results = @twarc.search(query: "mandolin")
+    @twarc.search(query: "mandolin")
     log = File.open(@log_location).readlines
     assert_equal 3, log.size
     assert_equal "INFO -- : starting search for mandolin", log[1].split("]").last.strip

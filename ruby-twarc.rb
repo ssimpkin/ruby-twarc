@@ -8,6 +8,7 @@ include Options
 hash_options = setup_options
 
 q = hash_options[:query]
+
 if hash_options[:auth_file]
   arguments = eval(File.open(hash_options[:auth_file]).read)
   arguments[:log] = hash_options[:log]
@@ -27,5 +28,3 @@ else
 end
 
 puts @results
-
-
