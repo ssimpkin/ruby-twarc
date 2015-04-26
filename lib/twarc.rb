@@ -39,11 +39,12 @@ class Twarc
 
     TweetStream::Client.new.track(query) do |status|
       if @results.size < 10
-        @results << status
+        @results << status.to_h
       else
         break
       end
     end
+    @@logger.info("archived #{@results.size} tweets.")
     @results
   end
 

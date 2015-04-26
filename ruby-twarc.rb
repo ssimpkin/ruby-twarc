@@ -21,8 +21,7 @@ twarc = Twarc.new(arguments)
 if hash_options[:search]
   @results = twarc.search(query: q)
 elsif hash_options[:stream]
-  puts "Streaming not yet implemented."
-  exit
+  @results = twarc.stream(query: q)
 else
   puts "Hydrate not yet implemented."
 end
