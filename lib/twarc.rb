@@ -1,9 +1,9 @@
 require "json"
 require "oauth"
 require "logger"
+require "tweetstream"
 
 TWITTER_SEARCH = "https://api.twitter.com/1.1/search/tweets.json"
-TWITTER_STREAM = "https://stream.twitter.com/1.1/statuses/filter.json"
 
 class Twarc
 
@@ -15,6 +15,7 @@ class Twarc
     @access_token = arguments[:access_token]
     @access_token_secret = arguments[:access_token_secret]
     @@logger = Logger.new(arguments[:log])
+    @results = []
   end
 
   def search(search_arguments = {})
@@ -22,6 +23,27 @@ class Twarc
     @@logger.info("starting search for #{query}")
     @results = twitter_response(twitter_url)
     @@logger.info("archived #{@results.size} tweets.")
+    @results
+  end
+
+  def stream(search_arguments = {})
+    @search_arguments = search_arguments
+    @@logger.info("connecting to filter stream for #{query}")
+    TweetStream.configure do |config|
+      config.consumer_key = @consumer_key
+      config.consumer_secret = @consumer_secret
+      config.oauth_token = @access_token
+      config.oauth_token_secret = @access_token_secret
+      config.auth_method = :oauth
+    end
+
+    TweetStream::Client.new.track(query) do |status|
+      if @results.size < 10
+        @results << status
+      else
+        break
+      end
+    end
     @results
   end
 
@@ -54,4 +76,5 @@ class Twarc
     access_token = prepare_access_token(@access_token, @access_token_secret)
     JSON.parse(access_token.request(:get, url).body)["statuses"]
   end
+
 end

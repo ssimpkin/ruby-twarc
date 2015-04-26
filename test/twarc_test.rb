@@ -27,9 +27,9 @@ class TwarcTest < Minitest::Test
   end
 
   def test_continued_search
-    id = "591653158700654593"
+    id = "592338718205353986"
     results = @twarc.search(query: "vodka", max_id: id, since_id: (id.to_i - 1).to_s)
-    assert_equal 1, results.size
+    assert_equal 100, results.size
     assert_equal id.to_i, results.first["id_str"].to_i
   end
 
@@ -46,6 +46,12 @@ class TwarcTest < Minitest::Test
     assert_equal 3, log.size
     assert_equal "INFO -- : starting search for mandolin", log[1].split("]").last.strip
     assert_equal "INFO -- : archived 100 tweets.", log.last.split("]").last.strip
+  end
+
+  def test_basic_stream
+    results = @twarc.stream(query: "vodka")
+    assert_instance_of Array, results
+    assert_equal 10, results.size
   end
 end
 
