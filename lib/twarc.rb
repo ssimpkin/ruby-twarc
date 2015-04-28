@@ -5,6 +5,7 @@ require_relative "./credentials"
 require_relative "./access_token"
 
 TWITTER_SEARCH = "https://api.twitter.com/1.1/search/tweets.json"
+TWITTER_HYDRATE = "https://api.twitter.com/1.1/statuses/lookup.json"
 
 class Twarc
 
@@ -28,6 +29,21 @@ class Twarc
 
   def max_id
     @results.size > 0 ? @results.last["id"] : 0
+  end
+
+  def hydrate(ids)
+    results = []
+    @@logger.info("hydrating #{results.size} ids.")
+    access_token = AccessToken.new(@c)
+    results << JSON.parse(access_token.request(:post, "#{TWITTER_HYDRATE}", {:id => "#{ids.first}"}).body)
+    puts results
+    results
+    # ids.each do |id|
+    #   access_token = AccessToken.new(@c)
+    #   results << JSON.parse(access_token.request(:post, "#{TWITTER_HYDRATE}", {:id => "#{ids.join(",")}"}).body)
+    #   puts results
+    #   results
+    # end
   end
 
   #alias_method :since_id, :max_id

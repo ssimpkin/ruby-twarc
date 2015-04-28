@@ -7,8 +7,12 @@ class AccessToken
     @access_token = prepare_access_token
   end
 
-  def request(method, url)
-    @access_token.request(method, url)
+  def request(method, url, body={})
+    if method == :get
+      @access_token.request(method, url)
+    elsif method == :post
+      @access_token.post(url, body)
+    end
   end
 
   private

@@ -50,6 +50,13 @@ class TwarcTest < Minitest::Test
     assert_instance_of Array, results
     assert_equal 10, results.size
   end
+
+  def test_hydrate
+    ids = File.open("data/hydrate_ids.txt").readlines
+    results = @twarc.hydrate(ids)
+    assert_equal 103, results.size
+    assert_equal "", results.first
+  end
 end
 
 
