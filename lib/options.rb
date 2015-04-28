@@ -7,10 +7,10 @@ module Options
     OptionParser.new do |opts|
       opts.banner = "Usage: ruby-twarc [options]"
       opts.on('--search', "Use the Twitter search API") do |v|
-        hash_options[:search] = v
+        hash_options[:mode] = :search
       end
       opts.on('--stream', "Use the Twitter stream API") do |v|
-        hash_options[:stream] = v
+        hash_options[:mode] = :stream
       end
       opts.on('--hydrate', "Rehydrate tweets from a file of ids") do |v|
         hash_options[:stream] = v

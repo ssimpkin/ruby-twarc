@@ -18,12 +18,6 @@ end
 
 twarc = Twarc.new(arguments)
 
-if hash_options[:search]
-  @results = twarc.search(query: q)
-elsif hash_options[:stream]
-  @results = twarc.stream(query: q)
-else
-  puts "Hydrate not yet implemented."
-end
+@results = twarc.fetch(query: q, mode: hash_options[:mode])
 
 puts @results
