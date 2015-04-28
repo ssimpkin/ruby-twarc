@@ -22,15 +22,11 @@ class Twarc
     @@logger.info("starting #{search_arguments[:mode]} for #{@query}")
     self.send(search_arguments[:mode])
     @@logger.info("archived #{@results.size} tweets.")
-    @results
+    return @results, max_id
   end
 
   def max_id
-    if @results
-      return @results.size > 0 ? @results.last["id_str"] : 0
-    else
-      @search_arguments[:max_id]
-    end
+    @results.size > 0 ? @results.last["id"] : 0
   end
 
   private
