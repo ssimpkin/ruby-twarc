@@ -19,6 +19,7 @@ class Twarc
   def fetch(search_arguments = {})
     @query = search_arguments[:query]
     @count = search_arguments[:count]
+    @since_id = search_arguments[:since_id]
     @@logger.info("starting #{search_arguments[:mode]} for #{@query}")
     self.send(search_arguments[:mode])
     @@logger.info("archived #{@results.size} tweets.")
@@ -29,11 +30,12 @@ class Twarc
     @results.size > 0 ? @results.last["id"] : 0
   end
 
+  #alias_method :since_id, :max_id
+
   private
 
   def twitter_url
-    since_id = ""
-    "#{TWITTER_SEARCH}?q=#{@query}&count=#{@count}&max_id=#{max_id}&since_id=#{since_id}"
+    "#{TWITTER_SEARCH}?q=#{@query}&count=#{@count}&max_id=#{max_id}&since_id=#{@since_id}"
   end
 
   def twitter_response(url)

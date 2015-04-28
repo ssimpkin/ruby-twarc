@@ -28,11 +28,6 @@ class TwarcTest < Minitest::Test
     assert_equal 100, initial_results.size
     assert_equal 100, continued_results.size
     assert (initial_results.last["id"] > continued_results.first["id"]), "#{initial_results.last["id"]}\n#{continued_results.first["id"]}"
-    initial_results, max_id = @twarc.fetch(query: "vodka", count: 100, mode: :search)
-    continued_results, continued_max_id = @twarc.fetch(query: "vodka", since_id: max_id, count: 100, mode: :search)
-    assert_equal 100, initial_results.size
-    assert_equal 100, continued_results.size
-    assert (initial_results.last["id"] > continued_results.first["id"]), "#{initial_results.last["id"]}\n#{continued_results.first["id"]}"
   end
 
   def test_empty_search
