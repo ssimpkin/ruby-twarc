@@ -16,7 +16,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_basic_search
-    results = @twarc.fetch(query: "vodka", mode: :search)
+    results = @twarc.fetch(query: "vodka", mode: :search, count: 100)
     assert_instance_of Array, results
     assert_equal 100, results.size
     assert_equal @twarc.max_id, results.last["id_str"]
@@ -30,14 +30,14 @@ class TwarcTest < Minitest::Test
   # end
 
   def test_empty_search
-    results = @twarc.fetch(query: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, mode: :search)
+    results = @twarc.fetch(query: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, mode: :search, count: 100)
     assert_equal 0, results.size
     log = File.open(@log_location).readlines
     assert_equal "INFO -- : archived 0 tweets.", log.last.split("]").last.strip
   end
 
   def test_basic_search_logging
-    @twarc.fetch(query: "mandolin", mode: :search)
+    @twarc.fetch(query: "mandolin", mode: :search, count: 100)
     log = File.open(@log_location).readlines
     assert_equal 3, log.size
     assert_equal "INFO -- : starting search for mandolin", log[1].split("]").last.strip
@@ -45,7 +45,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_basic_stream
-    results = @twarc.fetch(query: "vodka", mode: :stream)
+    results = @twarc.fetch(query: "vodka", mode: :stream, count: 10)
     assert_instance_of Array, results
     assert_equal 10, results.size
   end
