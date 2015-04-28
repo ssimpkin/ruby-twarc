@@ -35,15 +35,8 @@ class Twarc
     results = []
     @@logger.info("hydrating #{results.size} ids.")
     access_token = AccessToken.new(@c)
-    results << JSON.parse(access_token.request(:post, "#{TWITTER_HYDRATE}", {:id => "#{ids.first}"}).body)
-    puts results
-    results
-    # ids.each do |id|
-    #   access_token = AccessToken.new(@c)
-    #   results << JSON.parse(access_token.request(:post, "#{TWITTER_HYDRATE}", {:id => "#{ids.join(",")}"}).body)
-    #   puts results
-    #   results
-    # end
+    url = "#{TWITTER_HYDRATE}?id=#{ids.join(",")}"
+    JSON.parse(access_token.request(:get, url).body)
   end
 
   #alias_method :since_id, :max_id

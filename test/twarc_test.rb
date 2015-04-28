@@ -52,10 +52,10 @@ class TwarcTest < Minitest::Test
   end
 
   def test_hydrate
-    ids = File.open("data/hydrate_ids.txt").readlines
+    ids = File.open("data/hydrate_ids.txt").readlines.take 100
     results = @twarc.hydrate(ids)
-    assert_equal 103, results.size
-    assert_equal "", results.first
+    assert_equal 85, results.size #some tweets don't get rehydrated
+    assert_equal 501064205089665024, results.first["id"]
   end
 end
 
