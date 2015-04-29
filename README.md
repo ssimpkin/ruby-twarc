@@ -5,6 +5,7 @@ ruby-twarc a port of Ed Summer's [Twarc](https://github.com/edsu/twarc) to Ruby.
 #install
 
 Currently, the steps to use ruby-twarc are:
+
 1. Clone this repo.
 2. Make ruby-twarc.rb executable.
 3. Run 
@@ -34,6 +35,7 @@ ruby-twarc can also be used as a library, but requiring "lib/twarc". I plan to m
 #twitter API keys
 
 To use ruby-twarc, you'll need to register an application with Twitter (you can do this at [apps.twitter.com](http://apps.twitter.com). At the end of the process, you should have four keys: consumer_key, consumer_key_secret, access_token, and access_token_secret. You can either pass these keys in as command line parameters to ruby-twarc, or you can create an authentication file to use. The authentication file contains a Ruby hash holding all your keys. For example:
+
   {consumer_key: {YOUR CONSUMER KEY}, consumer_key_secret: {CONSUMER KEY SECRET}, access-token: {ACCESS TOKEN}, access_token_secret: {ACCESS TOKEN SECRET} }
 
 You can then specify the authentication file using the --auth-file parameter.
