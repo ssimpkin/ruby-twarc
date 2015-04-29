@@ -9,7 +9,6 @@ Currently, the steps to use ruby-twarc are:
 1. Clone this repo.
 2. Make ruby-twarc.rb executable.
 3. Run 
-    
     ruby-twarc [options]
 
 ruby-twarc can also be used as a library, but requiring "lib/twarc". I plan to make ruby-twarc a gem so it can be installed without cloning the repo, and required in the normal way. 
@@ -40,3 +39,19 @@ To use ruby-twarc, you'll need to register an application with Twitter (you can 
   {consumer_key: {YOUR CONSUMER KEY}, consumer_key_secret: {CONSUMER KEY SECRET}, access-token: {ACCESS TOKEN}, access_token_secret: {ACCESS TOKEN SECRET} }
 
 You can then specify the authentication file using the --auth-file parameter.
+
+#search
+
+#stream
+
+#hydrate
+
+#ruby library
+
+#utilities
+
+Ed Summer's Twarc comes with a suite of Python utilities for working with the JSON output. I haven't looked into what the Ruby equivalents of these would be. 
+
+#issues
+
+There's still plenty of work to be done. Please see the [issues list][https://github,com/redlibrarian/ruby-twarc/issues)
