@@ -54,4 +54,4 @@ Ed Summer's Twarc comes with a suite of Python utilities for working with the JS
 
 #issues
 
-There's still plenty of work to be done. Please see the [issues list][https://github,com/redlibrarian/ruby-twarc/issues)
+There's still plenty of work to be done. Please see the [issues list](https://github,com/redlibrarian/ruby-twarc/issues)
