@@ -6,7 +6,8 @@ ruby-twarc a port of Ed Summer's [Twarc](https://github.com/edsu/twarc) to Ruby.
 Currently, the steps to use ruby-twarc are:
 1. Clone this repo.
 2. Make ruby-twarc.rb executable.
-3. Run ruby-twarc [options]
+3. Run 
+    ruby-twarc [options]
 
 ruby-twarc can also be used as a library, but requiring "lib/twarc". I plan to make ruby-twarc a gem so it can be installed without cloning the repo, and required in the normal way. 
 
