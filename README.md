@@ -1,6 +1,7 @@
 # ruby-twarc
 
 ruby-twarc a port of Ed Summer's [Twarc](https://github.com/edsu/twarc) to Ruby. Twarc allows you to archive Twitter JSON data, and can be used either as command-line tool, or as a Ruby library. There are a few differences between twarc and ruby-twarc, but for the most part, it follows Ed Summers' design. ruby-twarc uses the following Twitter APIs: Search (to retroactively search Twitter timelines), Stream (to capture tweets in realtime), and Lookup (to "hydrate" tweets from a list of IDs. ruby-twarc, like twarc, will pause operation to abide by Twitter's rate-limits.
+
 #install
 
 Currently, the steps to use ruby-twarc are:
