@@ -7,15 +7,16 @@ class TwarcTest < Minitest::Test
     @log_location = "../data/twarc.log"
     @auth_hash = eval(File.open("../../ruby-twarc-auth.rb").read)
     File.delete(@log_location) if File.exists? @log_location
-    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location})
   end
 
   def test_instantiation_of_twarc_object
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: SearchAPI})
     assert @twarc
     assert_instance_of Twarc, @twarc
   end
 
   def test_basic_search
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: SearchAPI})
     results, max_id = @twarc.fetch(query: "vodka", mode: :search, count: 100)
     assert_instance_of Array, results
     assert_equal 100, results.size
@@ -23,6 +24,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_continued_search
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: SearchAPI})
     initial_results, max_id = @twarc.fetch(query: "vodka", count: 100, mode: :search)
     continued_results, continued_max_id = @twarc.fetch(query: "vodka", max_id: max_id-1, count: 100, mode: :search)
     assert_equal 100, initial_results.size
@@ -31,6 +33,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_empty_search
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: SearchAPI})
     results, max_id = @twarc.fetch(query: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, mode: :search, count: 100)
     assert_equal 0, results.size
     log = File.open(@log_location).readlines
@@ -38,6 +41,7 @@ class TwarcTest < Minitest::Test
   end
 
   def test_basic_search_logging
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: SearchAPI})
     @twarc.fetch(query: "mandolin", mode: :search, count: 100)
     log = File.open(@log_location).readlines
     assert_equal 3, log.size
@@ -46,15 +50,17 @@ class TwarcTest < Minitest::Test
   end
 
   def test_basic_stream
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: StreamAPI})
     results, max_id = @twarc.fetch(query: "vodka", mode: :stream, count: 10)
     assert_instance_of Array, results
     assert_equal 10, results.size
   end
 
   def test_hydrate
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: HydrateAPI})
     ids = File.open("data/hydrate_ids.txt").readlines.take 100
-    results = @twarc.hydrate(ids)
-    assert_equal 85, results.size #some tweets don't get rehydrated
+    results, max_id = @twarc.fetch(ids: ids)
+    assert_equal 86, results.size #some tweets don't get rehydrated
     assert_equal 501064205089665024, results.first["id"]
   end
 end
