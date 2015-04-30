@@ -27,7 +27,6 @@ class TwitterAPI
 
 end
 
-
 class SearchAPI < TwitterAPI
 
   private
