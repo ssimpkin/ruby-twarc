@@ -7,19 +7,19 @@ module Options
     OptionParser.new do |opts|
       opts.banner = "Usage: ruby-twarc [options]"
       opts.on('--search', "Use the Twitter search API") do |v|
-        hash_options[:mode] = :search
+        hash_options[:twitter_api] = SearchAPI
       end
       opts.on('--stream', "Use the Twitter stream API") do |v|
-        hash_options[:mode] = :stream
+        hash_options[:twitter_api] = StreamAPI
       end
       opts.on('--hydrate', "Rehydrate tweets from a file of ids") do |v|
-        hash_options[:stream] = v
+        hash_options[:twitter_api] = HydrateAPI
       end
       opts.on('--max_id', "Maximum tweet id to search for") do |v|
-        hash_options[:stream] = v
+        hash_options[:max_id] = v
       end
       opts.on('--since_id', "Smallest id to search for") do |v|
-        hash_options[:stream] = v
+        hash_options[:since_id] = v
       end
       opts.on('--auth_file [ARG]', "specify an auth file") do |v|
         hash_options[:auth_file] = v

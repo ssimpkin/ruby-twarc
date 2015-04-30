@@ -16,6 +16,8 @@ else
   arguments = hash_options
 end
 
+arguments[:twitter_api] = hash_options[:twitter_api]
+
 twarc = Twarc.new(arguments)
 
 @results = twarc.fetch(query: q, mode: hash_options[:mode])
