@@ -1,4 +1,5 @@
 require "tweetstream"
+require_relative "./access_token"
 
 class TwitterAPI
 

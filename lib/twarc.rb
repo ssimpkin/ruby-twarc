@@ -1,8 +1,6 @@
 require "json"
 require "logger"
-require "tweetstream"
 require_relative "./credentials"
-require_relative "./access_token"
 require_relative "./twitter_apis"
 
 class Twarc
