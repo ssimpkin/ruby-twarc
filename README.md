@@ -55,3 +55,6 @@ Ed Summer's Twarc comes with a suite of Python utilities for working with the JS
 #issues
 
 There's still plenty of work to be done. Please see the [issues list](https://github.com/redlibrarian/ruby-twarc/issues)
+
+
+Hydrate Test data: first 100 IDs from ferguson-tweet-ids.zip from https://archive.org/details/ferguson-tweet-ids

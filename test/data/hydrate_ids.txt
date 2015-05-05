@@ -98,6 +98,3 @@
 501064227302674433
 501064227344646144
 501064227688558592
-
-# Test data: first 100 IDs from ferguson-tweet-ids.zip from
-# https://archive.org/details/ferguson-tweet-ids

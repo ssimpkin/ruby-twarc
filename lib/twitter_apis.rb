@@ -20,7 +20,7 @@ class TwitterAPI
 
   def parse(search_arguments)
     @query = search_arguments[:query]
-    @count = search_arguments[:count]
+    @count = search_arguments[:count].to_i
     @max_id = search_arguments[:max_id] || ""
     @since_id = search_arguments[:since_id] || ""
     @ids = search_arguments[:ids]

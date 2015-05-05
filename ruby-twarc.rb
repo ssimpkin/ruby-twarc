@@ -20,6 +20,8 @@ arguments[:twitter_api] = hash_options[:twitter_api]
 
 twarc = Twarc.new(arguments)
 
-@results = twarc.fetch(query: q, count: hash_options[:count].to_i)
+hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines
+
+@results = twarc.fetch(hash_options)
 
 puts @results

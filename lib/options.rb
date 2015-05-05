@@ -12,8 +12,9 @@ module Options
       opts.on('--stream', "Use the Twitter stream API") do |v|
         hash_options[:twitter_api] = StreamAPI
       end
-      opts.on('--hydrate', "Rehydrate tweets from a file of ids") do |v|
+      opts.on('--hydrate [ARGV]', "Rehydrate tweets from a file of ids") do |v|
         hash_options[:twitter_api] = HydrateAPI
+        hash_options[:hydrate_file] = v
       end
       opts.on('--max_id', "Maximum tweet id to search for") do |v|
         hash_options[:max_id] = v
