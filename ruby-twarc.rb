@@ -20,7 +20,7 @@ arguments[:twitter_api] = hash_options[:twitter_api]
 
 twarc = Twarc.new(arguments)
 
-hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines
+hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines if hash_options[:twitter_api] == HydrateAPI
 
 @results = twarc.fetch(hash_options)
 

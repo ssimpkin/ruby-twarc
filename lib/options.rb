@@ -6,11 +6,13 @@ module Options
     hash_options = {}
     OptionParser.new do |opts|
       opts.banner = "Usage: ruby-twarc [options]"
-      opts.on('--search', "Use the Twitter search API") do |v|
+      opts.on('--search [ARGV]', "Use the Twitter search API") do |v|
         hash_options[:twitter_api] = SearchAPI
+        hash_options[:query] = v
       end
-      opts.on('--stream', "Use the Twitter stream API") do |v|
+      opts.on('--stream [ARGV]', "Use the Twitter stream API") do |v|
         hash_options[:twitter_api] = StreamAPI
+        hash_options[:query] = v
       end
       opts.on('--hydrate [ARGV]', "Rehydrate tweets from a file of ids") do |v|
         hash_options[:twitter_api] = HydrateAPI
@@ -36,9 +38,6 @@ module Options
       end
       opts.on('--access_token_secret', "your secret token") do |v|
         hash_options[:access_token_secret] = v
-      end
-      opts.on('--query [ARG]', "query string") do |v|
-        hash_options[:query] = v
       end
       opts.on('--log [ARG]', "log file location") do |v|
         hash_options[:log] = v
