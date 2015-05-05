@@ -26,7 +26,7 @@ arguments[:twitter_api] = hash_options[:twitter_api]
 twarc = Twarc.new(arguments)
 
 begin
-  hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines if hash_options[:twitter_api] == HydrateAPI
+  hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines if hash_options[:twitter_api] == HydrateSearcher
 rescue Exception => e
   puts "ruby-twarc: #{e}"
   exit

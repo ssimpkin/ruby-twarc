@@ -9,7 +9,7 @@ class Twarc
   attr_writer :twitter_api
 
   def initialize(arguments = {})
-    @twitter_api = arguments[:twitter_api].new(Credentials.new(arguments))
+    @twitter_api = TwitterAPI.new(Credentials.new(arguments), arguments[:twitter_api])
     @@logger = Logger.new(arguments[:log])
     @results = []
   end

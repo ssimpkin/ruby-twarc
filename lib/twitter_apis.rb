@@ -3,13 +3,13 @@ require_relative "./access_token"
 
 class TwitterAPI
 
-  def initialize(credentials)
+  def initialize(credentials, searcher = DefaultSearcher)
     @credentials = credentials
+    @searcher = searcher.new
   end
 
   def search(search_arguments)
-    parse search_arguments
-    twitter_response(twitter_url)
+    @searcher.search(search_arguments, access_token, @credentials)
   end
 
   private
@@ -18,32 +18,13 @@ class TwitterAPI
     @access_token ||= AccessToken.new(@credentials)
   end
 
-  def parse(search_arguments)
-    @query = search_arguments[:query]
-    @count = search_arguments[:count].to_i
-    @max_id = search_arguments[:max_id] || ""
-    @since_id = search_arguments[:since_id] || ""
-    @ids = search_arguments[:ids]
-  end
-
 end
 
-class SearchAPI < TwitterAPI
-
-  private
-
-  def endpoint
-    "https://api.twitter.com/1.1/search/tweets.json"
-  end
-
-  def twitter_url
-    "#{endpoint}?q=#{@query}&count=#{@count}&max_id=#{@max_id}&since_id=#{@since_id}"
-  end
-
-  def twitter_response(url)
+class BasicSearcher
+  def search(arguments, access_token, credentials)
     results = []
     begin
-      results = JSON.parse(access_token.request(:get, url).body)["statuses"]
+      results = parsed_json(access_token, arguments)
     rescue Exception => e
       puts "ruby-twarc: #{e}"
     end
@@ -53,24 +34,52 @@ class SearchAPI < TwitterAPI
       return results, 0
     end
   end
-
 end
 
-class StreamAPI < TwitterAPI
-
-  def search(search_arguments)
-    parse search_arguments
-    configure_tweetstream
-    track
-  end
+class DefaultSearcher < BasicSearcher
 
   private
 
-  def track
+  def parsed_json(access_token, arguments)
+    JSON.parse(access_token.request(:get, url(arguments)).body)["statuses"]
+  end
+
+  def endpoint
+    "https://api.twitter.com/1.1/search/tweets.json"
+  end
+
+  def url(args)
+    "#{endpoint}?q=#{args[:query]}&count=#{args[:count]}&max_id=#{args[:max_id]}&since_id=#{args[:since_id]}"
+  end
+
+end
+
+class HydrateSearcher < BasicSearcher
+
+  private
+
+  def parsed_json(access_token, arguments)
+    JSON.parse(access_token.request(:get, url(arguments)).body)
+  end
+
+
+  def endpoint
+    "https://api.twitter.com/1.1/statuses/lookup.json"
+  end
+
+  def url(args)
+    "#{endpoint}?id=#{args[:ids].join(",")}"
+  end
+end
+
+class StreamSearcher
+
+ def search(arguments, access_token, credentials)
+    configure_tweetstream(credentials)
     results = []
-    TweetStream::Client.new.track(@query) do |status|
-      if @count > 0
-        while results.size < @count
+    TweetStream::Client.new.track(arguments[:query]) do |status|
+      if arguments[:count] > 0
+        while results.size < arguments[:count]
           puts status.to_h
           results << status.to_h
         end
@@ -89,38 +98,13 @@ class StreamAPI < TwitterAPI
     end
   end
 
-  def configure_tweetstream
+  private
+
+  def configure_tweetstream(credentials)
     TweetStream.configure do |config|
-      config.consumer_key, config.consumer_secret, config.oauth_token, config.oauth_token_secret = @credentials.keys
+      config.consumer_key, config.consumer_secret, config.oauth_token, config.oauth_token_secret = credentials.keys
       config.auth_method = :oauth
     end
   end
 
-end
-
-class HydrateAPI < TwitterAPI
-
-  private
-
-  def endpoint
-    "https://api.twitter.com/1.1/statuses/lookup.json"
-  end
-
-  def twitter_url
-    "#{endpoint}?id=#{@ids.join(",")}"
-  end
-
-  def twitter_response(url)
-    results = []
-    begin
-      results = JSON.parse(access_token.request(:get, url).body)
-    rescue Exception => e
-      puts "ruby-twarc: #{e}"
-    end
-    if results.size > 0
-      return results, results.last["id"]
-    else
-      return results, 0
-    end
-  end
 end
