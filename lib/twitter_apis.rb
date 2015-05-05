@@ -69,7 +69,7 @@ class StreamAPI < TwitterAPI
   def track
     results = []
     TweetStream::Client.new.track(@query) do |status|
-      if @count
+      if @count > 0
         while results.size < @count
           puts status.to_h
           results << status.to_h
