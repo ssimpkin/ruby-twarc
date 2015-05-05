@@ -41,7 +41,11 @@ class SearchAPI < TwitterAPI
   end
 
   def twitter_response(url)
-    JSON.parse(access_token.request(:get, url).body)["statuses"]
+    begin
+      JSON.parse(access_token.request(:get, url).body)["statuses"]
+    rescue Exception => e
+      puts "ruby-twarc: #{e}"
+    end
   end
 
 end
@@ -91,6 +95,10 @@ class HydrateAPI < TwitterAPI
   end
 
   def twitter_response(url)
-    JSON.parse(access_token.request(:get, url).body)
+    begin
+      JSON.parse(access_token.request(:get, url).body)
+    rescue Exception => e
+      puts "ruby-twarc: #{e}"
+    end
   end
 end
