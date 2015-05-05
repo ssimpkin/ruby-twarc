@@ -10,7 +10,12 @@ hash_options = setup_options
 q = hash_options[:query]
 
 if hash_options[:auth_file]
-  arguments = eval(File.open(hash_options[:auth_file]).read)
+  begin
+    arguments = eval(File.open(hash_options[:auth_file]).read)
+  rescue Exception => e
+    puts "ruby-twarc: #{e}"
+    exit
+  end
   arguments[:log] = hash_options[:log]
 else
   arguments = hash_options
@@ -20,7 +25,13 @@ arguments[:twitter_api] = hash_options[:twitter_api]
 
 twarc = Twarc.new(arguments)
 
-hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines if hash_options[:twitter_api] == HydrateAPI
+begin
+  hash_options[:ids] = File.open(hash_options[:hydrate_file]).readlines if hash_options[:twitter_api] == HydrateAPI
+rescue Exception => e
+  puts "ruby-twarc: #{e}"
+  exit
+end
+
 
 @results = twarc.fetch(hash_options)
 

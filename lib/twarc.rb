@@ -20,8 +20,4 @@ class Twarc
     @@logger.info("archived #{@results.size} tweets.")
     return @results, max_id
   end
-
-  def max_id
-    @results.size > 0 ? @results.last["id"] : 0
-  end
 end

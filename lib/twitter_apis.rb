@@ -41,10 +41,16 @@ class SearchAPI < TwitterAPI
   end
 
   def twitter_response(url)
+    results = []
     begin
-      JSON.parse(access_token.request(:get, url).body)["statuses"]
+      results = JSON.parse(access_token.request(:get, url).body)["statuses"]
     rescue Exception => e
       puts "ruby-twarc: #{e}"
+    end
+    if results.size > 0
+      return results, results.last["id"]
+    else
+      return results, 0
     end
   end
 
@@ -63,10 +69,23 @@ class StreamAPI < TwitterAPI
   def track
     results = []
     TweetStream::Client.new.track(@query) do |status|
-      while true
-        puts status.to_h
-        trap("INT"){ exit }
+      if @count
+        while results.size < @count
+          puts status.to_h
+          results << status.to_h
+        end
+        break
+      else
+        while true
+          puts status.to_h
+          trap("INT"){ exit }
+        end
       end
+    end
+    if results.size > 0
+      return results, results.last["id"]
+    else
+      return results, 0
     end
   end
 
@@ -92,10 +111,16 @@ class HydrateAPI < TwitterAPI
   end
 
   def twitter_response(url)
+    results = []
     begin
-      JSON.parse(access_token.request(:get, url).body)
+      results = JSON.parse(access_token.request(:get, url).body)
     rescue Exception => e
       puts "ruby-twarc: #{e}"
+    end
+    if results.size > 0
+      return results, results.last["id"]
+    else
+      return results, 0
     end
   end
 end
