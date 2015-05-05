@@ -63,8 +63,7 @@ libraries > stream.out
 Uses Twitter's lookup API to get the bodies of a set of tweets, given a
 list of IDs. Example search
 
-    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --hydrate
-[id_file]
+    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --hydrate [id_file]
 
 #ruby library
 
