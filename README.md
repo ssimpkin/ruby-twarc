@@ -47,24 +47,21 @@ You can then specify the authentication file using the --auth-file parameter.
 Search uses Twitter's Search API to return tweets that already exist in
 the Twitter timeline. Example search
 
-    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --search
-libraries --count 100
+    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --search libraries --count 100
 
 #stream
 
 Uses Twitter's realtime API to return tweets as they occur.
 Example search
 
-    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --stream
-libraries > stream.out
+    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --stream libraries > stream.out
 
 #hydrate
 
 Uses Twitter's lookup API to get the bodies of a set of tweets, given a
 list of IDs. Example search
 
-    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --hydrate
-[id_file]
+    ./ruby-twarc.rb --auth_file [auth_file] --log [log_file] --hydrate [id_file]
 
 #ruby library
 
