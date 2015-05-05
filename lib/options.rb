@@ -42,6 +42,9 @@ module Options
       opts.on('--log [ARG]', "log file location") do |v|
         hash_options[:log] = v
       end
+      opts.on('--count [ARG]', "number of tweets to capture") do |v|
+        hash_options[:count] = v
+      end
     end.parse!
     hash_options
   end

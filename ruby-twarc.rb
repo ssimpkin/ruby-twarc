@@ -20,6 +20,6 @@ arguments[:twitter_api] = hash_options[:twitter_api]
 
 twarc = Twarc.new(arguments)
 
-@results = twarc.fetch(query: q, mode: hash_options[:mode])
+@results = twarc.fetch(query: q, count: hash_options[:count].to_i)
 
 puts @results

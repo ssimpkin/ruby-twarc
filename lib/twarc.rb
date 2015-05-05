@@ -15,8 +15,9 @@ class Twarc
   end
 
   def fetch(search_arguments = {})
-    @@logger.info("starting #{search_arguments[:mode]} for #{search_arguments[:query]}")
-    @results = @twitter_api.search(search_arguments)
+    puts search_arguments
+    @@logger.info("starting #{@twitter_api} for #{search_arguments[:query]}")
+    @results, max_id = @twitter_api.search(search_arguments)
     @@logger.info("archived #{@results.size} tweets.")
     return @results, max_id
   end
