@@ -20,7 +20,7 @@ class TwitterAPI
 
 end
 
-class BasicSearcher
+module DefaultSearchMethod
   def search(arguments, access_token, credentials)
     results = []
     begin
@@ -36,7 +36,8 @@ class BasicSearcher
   end
 end
 
-class DefaultSearcher < BasicSearcher
+class DefaultSearcher
+  include DefaultSearchMethod
 
   private
 
@@ -51,10 +52,10 @@ class DefaultSearcher < BasicSearcher
   def url(args)
     "#{endpoint}?q=#{args[:query]}&count=#{args[:count]}&max_id=#{args[:max_id]}&since_id=#{args[:since_id]}"
   end
-
 end
 
-class HydrateSearcher < BasicSearcher
+class HydrateSearcher
+  include DefaultSearchMethod
 
   private
 

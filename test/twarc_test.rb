@@ -23,13 +23,22 @@ class TwarcTest < Minitest::Test
     assert_equal max_id, results.last["id"]
   end
 
-  def test_continued_search
+  def test_max_id
     @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: DefaultSearcher})
     initial_results, max_id = @twarc.fetch(query: "vodka", count: 100)
     continued_results, continued_max_id = @twarc.fetch(query: "vodka", max_id: max_id-1, count: 100)
     assert_equal 100, initial_results.size
     assert_equal 100, continued_results.size
     assert (initial_results.last["id"] > continued_results.first["id"]), "#{initial_results.last["id"]}\n#{continued_results.first["id"]}"
+  end
+
+  def test_since_id
+    @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: DefaultSearcher})
+    initial_results, max_id = @twarc.fetch(query: "vodka", count: 100)
+    continued_results, continued_max_id = @twarc.fetch(query: "vodka", since_id: max_id, count: 100)
+    assert_equal 100, initial_results.size
+    assert_equal 100, continued_results.size
+    assert (initial_results.last["id"] < continued_results.first["id"]), "#{initial_results.last["id"]}\n#{continued_results.first["id"]}"
   end
 
   def test_empty_search
