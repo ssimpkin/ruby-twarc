@@ -43,7 +43,7 @@ module Options
         hash_options[:log] = v
       end
       opts.on('--count [ARG]', "number of tweets to capture") do |v|
-        hash_options[:count] = v
+        hash_options[:count] = v.to_i
       end
     end.parse!
     hash_options

@@ -32,7 +32,6 @@ rescue Exception => e
   exit
 end
 
-
 @results = twarc.fetch(hash_options)
 
 puts @results

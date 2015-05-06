@@ -60,7 +60,7 @@ class TwarcTest < Minitest::Test
     @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: HydrateSearcher})
     ids = File.open("data/hydrate_ids.txt").readlines
     results, max_id = @twarc.fetch(ids: ids)
-    assert_equal 85, results.size #some tweets don't get rehydrated
+    assert_equal 86, results.size #some tweets don't get rehydrated
     assert_equal 501064205089665024, results.first["id"]
   end
 end
