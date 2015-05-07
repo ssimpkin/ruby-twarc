@@ -28,6 +28,7 @@ module DefaultSearchMethod
     rescue Exception => e
       puts "ruby-twarc: #{e}"
     end
+    puts results
     if results.size > 0
       return results, results.last["id"]
     else

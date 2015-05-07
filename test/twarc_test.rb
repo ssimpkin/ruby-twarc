@@ -1,5 +1,8 @@
 require "minitest/autorun"
+require "webmock/minitest"
 require_relative "test_helper"
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 class TwarcTest < Minitest::Test
 
@@ -7,6 +10,24 @@ class TwarcTest < Minitest::Test
     @log_location = "../data/twarc.log"
     @auth_hash = eval(File.open("../../ruby-twarc-auth.rb").read)
     File.delete(@log_location) if File.exists? @log_location
+    @search_response = File.open("data/search_response.json").read
+    @stream_response = File.open("data/stream_response.json").read
+    @hydrate_response =File.open("data/hydrate_response.json").read
+    stub_request(:get, /twitter.com\/1.1\/search/).to_return(status: 200, body: @search_response, headers: {})
+    stub_request(:get, /twitter.com\/1.1\/statuses/).to_return(status: 200, body: @stream_response, headers: {})
+    stub_request(:get, /twitter.com\/1.1\/lookup/).to_return(status: 200, body: @hydrate_response, headers: {})
+  end
+
+  def test_webmock
+    uri = URI("https://www.twitter.com/1.1/search")
+    response = Net::HTTP.get(uri)
+    assert_equal response, @search_response
+    uri = URI("https://www.twitter.com/1.1/statuses")
+    response = Net::HTTP.get(uri)
+    assert_equal response, @stream_response
+    uri = URI("https://www.twitter.com/1.1/lookup")
+    response = Net::HTTP.get(uri)
+    assert_equal response, @hydrate_response
   end
 
   def test_instantiation_of_twarc_object
@@ -60,7 +81,7 @@ class TwarcTest < Minitest::Test
 
   def test_basic_stream
     @twarc = Twarc.new({consumer_key: @auth_hash[:consumer_key], consumer_secret: @auth_hash[:consumer_secret], access_token: @auth_hash[:access_token], access_token_secret: @auth_hash[:access_token_secret], log: @log_location, twitter_api: StreamSearcher})
-    results, max_id = @twarc.fetch(query: "the", count: 10)
+    results, max_id = @twarc.fetch(query: "vodka", count: 10)
     assert_instance_of Array, results
     assert_equal 10, results.size
   end
