@@ -38,7 +38,7 @@ ruby-twarc can also be used as a library, but requiring "lib/twarc". I plan to m
 
 To use ruby-twarc, you'll need to register an application with Twitter (you can do this at [apps.twitter.com](http://apps.twitter.com). At the end of the process, you should have four keys: consumer_key, consumer_secret, access_token, and access_token_secret. You can either pass these keys in as command line parameters to ruby-twarc, or you can create an authentication file to use. The authentication file contains a Ruby hash holding all your keys. For example:
 
-  {consumer_key: {YOUR CONSUMER KEY}, consumer_secret: {CONSUMER KEY SECRET}, access-token: {ACCESS TOKEN}, access_token_secret: {ACCESS TOKEN SECRET} }
+  {consumer_key: "YOUR CONSUMER KEY", consumer_secret: "CONSUMER KEY SECRET", access_token: "ACCESS TOKEN", access_token_secret: "ACCESS TOKEN SECRET" }
 
 You can then specify the authentication file using the --auth-file parameter.
 
